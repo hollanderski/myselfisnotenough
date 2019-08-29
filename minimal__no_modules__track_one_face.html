@@ -263,15 +263,20 @@
           const face = faces[i]
           
           if(timer!=null){
-        	  if (face.state === brfv5.BRFv5State.FACE_TRACKING){
+        	  if (face.state === brfv5.BRFv5State.RESET || face.state === brfv5.BRFv5State.FACE_DETECTION){
           		  noFace++;
           		  console.log("pas de tete", noFace)
         	  }
     		 else{
-    			 if(timer.isPaused) timer.resume(); 
+    			 
+    			
+    			 if(timer.isPaused()){
+    				console.log("c reparti", timer.isPaused());
+    				timer.resume(); 
+    			 }
     		  } 
         	  
-    		  if(noFace==100){
+    		  if(noFace==50){
     			  console.log("STOP")
     			  timer.pause()
     			  noFace=0;
@@ -462,8 +467,10 @@
             timerId = window.setTimeout(callback, remaining);
             isPaused=false;
         };
+        
+        this.isPaused = function(){ return isPaused; }
 
-        this.resume();
+        //this.resume();
     }
 
     
