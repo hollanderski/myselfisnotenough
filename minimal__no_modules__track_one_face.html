@@ -58,7 +58,8 @@
 
 
     // Set the BRFv5 library name here, also set your own appId for reference.
-	var timer
+	var timer;
+    var noFace=0;
     const _libraryName = 'BRFv5_JS_tk260819_v5.0.0_trial'
     const _appId = 'brfv5.browser.minimal.nomodules' // (mandatory): 8 to 64 characters, a-z . 0-9 allowed
     const brfv5 = {} // The library namespace.
@@ -210,12 +211,12 @@
 
     const trackFaces = () => {
       let testeurDeVisage = 0;
-      let noFace=0;
+     
       
       function checkVoid(){
-  		console.log("testeur", testeurDeVisage)
-  		if(noFace==5){
+  		if(noFace==2){
   			console.log("NEANT")
+  			timer.pause()
       		changeText(ctxt, "Ne me quitte pas");
   			noFace=0;
   		}
@@ -227,6 +228,7 @@
       			}
       			else{
       				console.log("detecte")
+      				timer.resume()
       				index++;
                   	changeText(ctxt, words[index]);
       			}
@@ -259,10 +261,22 @@
         for (let i = 0; i < faces.length; i++) {
 		
           const face = faces[i]
-          /*if(timer!=null){
-        	  if (face.state=="reset") timer.pause();//testeurDeVisage=1;
-    		  else timer.resume(); //testeurDeVisage=0; 
-          } */
+          
+          if(timer!=null){
+        	  if (face.state === brfv5.BRFv5State.FACE_TRACKING){
+          		  noFace++;
+          		  console.log("pas de tete", noFace)
+        	  }
+    		 else{
+    			 if(timer.isPaused) timer.resume(); 
+    		  } 
+        	  
+    		  if(noFace==100){
+    			  console.log("STOP")
+    			  timer.pause()
+    			  noFace=0;
+    		  }
+          } 
 		  
           console.log("etat", face.state)
           
@@ -272,14 +286,7 @@
             drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
 
-          /*  if (!brfv5.BRFv5State.FACE_TRACKING)
-              testeurDeVisage = 1;
-            if (brfv5.BRFv5State.FACE_TRACKING)  
-              testeurDeVisage = 0; 
-            ctx.fillText(testeurDeVisage, 50, 100); */
-
           } else {
-        	//if(face.state=="reset") testeurDeVisage=1; // j'ai ajouté cela sinon cela ne marchait pas
         	
             doDrawFaceDetection = true
 
@@ -294,20 +301,7 @@
         drawRect(ctx, _brfv5Config.faceDetectionConfig.regionOfInterest, '#ffffff', 2.0)
         drawRects(ctx, _brfv5Manager.getDetectedRects(), '#00a0ff', 1.0)
         drawRects(ctx, _brfv5Manager.getMergedRects(), '#ffffff', 3.0)
-        /*
-        if (firstTracked) { //lancement du monologue
-              console.log("Début du monologue");
-              setInterval(function () {  
-            	  // Si rien tracké pendant 5s : changer texte "ne me quitte pas"
-            	  // Si après ça toujours rien : changer texte retour début + firstTracked=true
-            	  changeText(ctxt, words); 
-            	  words.shift(); 
-            }, 3000);
-              firstTracked = false
-            }
-        
-        */
-        
+      
         if (firstTracked) { //lancement du monologue
             console.log("Début du monologue");
         	var index=0; 
@@ -454,16 +448,19 @@
     
     function Timer(callback, delay) {
         var timerId, start, remaining = delay;
+        var isPaused=false;
 
         this.pause = function() {
             window.clearTimeout(timerId);
             remaining -= Date.now() - start;
+            isPaused=true;
         };
 
         this.resume = function() {
             start = Date.now();
             window.clearTimeout(timerId);
             timerId = window.setTimeout(callback, remaining);
+            isPaused=false;
         };
 
         this.resume();
