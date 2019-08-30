@@ -213,30 +213,6 @@
       let testeurDeVisage = 0;
      
       
-      function checkVoid(){
-  		if(noFace==2){
-  			console.log("NEANT")
-  			timer.pause()
-      		changeText(ctxt, "Ne me quitte pas");
-  			noFace=0;
-  		}
-  		else{
-  				if(testeurDeVisage==1){
-  					console.log("rien detecte")
-      				noFace++;
-      				setTimeout(checkVoid,1000);	
-      			}
-      			else{
-      				console.log("detecte")
-      				timer.resume()
-      				index++;
-                  	changeText(ctxt, words[index]);
-      			}
-
-  			}
-  		
-  		}
-
 
       if (!_brfv5Manager || !_brfv5Config || !_imageData) { return }
 
@@ -273,15 +249,17 @@
     			 if(timer.isPaused()){
     				console.log("c reparti", timer.isPaused());
     				timer.resume(); 
+    				noFace=0;
     			 }
     		  } 
         	  
-    		  if(noFace==50){
-    			  console.log("STOP")
-    			  timer.pause()
+    		  if(!timer.isPaused() && noFace==50){
+    			  console.log("STOP ctx=", ctxt)
+    			  changeText(ctxt, "Ne pars pas");
+    			  timer.pause() 
     			  noFace=0;
     		  }
-          } 
+          }  
 		  
           console.log("etat", face.state)
           
@@ -323,24 +301,24 @@
           }
         
         function synchronize(){
-			console.log("synchronization")
-        	if(false){//testeurDeVisage==1){
-        		setTimeout(checkVoid,1000);
-        		noFace=0;
-        	}
-        	else{
+			console.log("synchronize", index);
         		index++;
             	changeText(ctxt, words[index]);
-        	}
         	
-        	if(index<words.length)
-        		//setTimeout(synchronize, 3000);
+        	
+        	if(index<words.length){
+        	
+//setTimeout(synchronize, 3000);
+	//	window.clearTimeout(timer.getTimerId());
+        		
         		timer = new Timer(function() {
+        			console.log("suite")
                     synchronize();
                 }, 3000); 
+        
+        		
+        	}
         }
-        
-        
       }
 
       requestAnimationFrame(trackFaces)
@@ -469,8 +447,9 @@
         };
         
         this.isPaused = function(){ return isPaused; }
+        this.getTimerId = function(){ return timerId; }
 
-        //this.resume();
+        this.resume();
     }
 
     
