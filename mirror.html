@@ -59,6 +59,7 @@
     // Set the BRFv5 library name here, also set your own appId for reference.
 	var timer;
     var noFace=0;
+    var duration=3;
     const _libraryName = 'BRFv5_JS_tk260819_v5.0.0_trial'
     const _appId = 'brfv5.browser.minimal.nomodules' // (mandatory): 8 to 64 characters, a-z . 0-9 allowed
     const brfv5 = {} // The library namespace.
@@ -254,7 +255,7 @@
         	  
     		  if(!timer.isPaused() && noFace==50){
     			  console.log("STOP ctx=", ctxt)
-    			  changeText(ctxt, "Ne pars pas");
+    			  changeText(ctxt, "Ne pars pas", "e3");
     			  timer.pause() 
     			  noFace=0;
     		  }
@@ -289,7 +290,7 @@
         	var index=0; 
           	  // Si rien tracké pendant 5s : changer texte "ne me quitte pas"
           	  // Si après ça toujours rien : changer texte retour début + firstTracked=true
-          	changeText(ctxt, words[index]); 
+          	changeText(ctxt, words[index], (index+1).toString()); 
             firstTracked = false;
            // setTimeout(synchronize, 3000); // ici mettre la durée de l'audio variable
             timer = new Timer(function() {
@@ -302,7 +303,7 @@
         function synchronize(){
 			console.log("synchronize", index);
         		index++;
-            	changeText(ctxt, words[index]);
+            	changeText(ctxt, words[index], (index+1).toString());
         	
         	
         	if(index<words.length){
@@ -313,7 +314,8 @@
         		timer = new Timer(function() {
         			console.log("suite")
                     synchronize();
-                }, 3000); 
+        			console.log("duration=", duration);
+                }, duration*1000+1000);  //
         
         		
         	}
@@ -421,11 +423,14 @@
       //audio.play();
     } */
     
-    function changeText(ctxt, text) {
+    function changeText(ctxt, text, audio) {
         ctxt.clearRect(0, 0, 1920, 1080);
         ctxt.fillText(text, 1920 / 2, 100);
-        //var audio = new Audio('test.wav');
-        //audio.play();
+        var audio = new Audio('voice/'+audio+'.wav');
+        audio.addEventListener('loadeddata', () => {
+        	  duration = audio.duration;
+        })
+        audio.play();
       }
     
     function Timer(callback, delay) {
