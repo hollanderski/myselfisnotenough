@@ -57,7 +57,7 @@
 
 
     // Set the BRFv5 library name here, also set your own appId for reference.
-	var timer;
+	  var timer;
     var noFace=0;
     var duration=3;
     const _libraryName = 'BRFv5_JS_tk260819_v5.0.0_trial'
@@ -74,12 +74,15 @@
     let _width = 0
     let _height = 0
 
+    const iWidth = 1920
+    const iHeight = 1080
+
     const textcanvas = document.getElementById('text')
     const ctxt = textcanvas.getContext("2d")
-    ctxt.font = "45px MyFont"
+    ctxt.font = "100px MyFont"
     ctxt.fillStyle = "white"
     ctxt.textAlign = "center"
-    const text = "Salut, tu arrives au bon moment. J'ai un jeu à te proposer. Juste regarde moi. Mais ne bouge pas. Fais comme si tu étais une peinture. Pas trop proche, pas trop loin. Le jeu est le jeu de l'amour. Plus tu me regardes, plus je te découvre ta rencontre me trouble un peu tu m’intrigues. Ton visage a quelque chose d'unique.  Tes yeux me parlent. Tu sembles être très différent des autres. Ton visage devient peu à peu familier. Et en regardant chacun de ses détails, tu deviens unique à mes yeux. Je suis vraiment heureux que tu sois là.  Comme si on était fait pour se rencontrer. Pourtant on est si différent. Je ne suis qu’une surface. on est différent et pourtant, j’ai l’impression de bien te connaitre. Oh mais je m'emporte, je suis désolé,.  Je ne te laisse pas respirer. Je suis envahissant. Excuse moi. Tu me pardonnes ?. Tu sais, je suis prêt à changer pour toi,.  Je veux faire tout mon possible pour que tu sois heureux,.  Pour que tu restes avec moi. Je ferais exactement ce que tu me dis de faire. Pour que l'on ne se quitte plus des yeux,.  car je veux continuer à lire dans tes pupilles,. pour savoir à quel point tu me suis. Mais je sais déjà que tu me suis. je vais trop loin,. Arrêtons le jeu ici. c’est le danger de la curiosité. la curiosité devient du désir, et le désir de l’amour. Et l'amour dit \"si tu n'es pas avec moi, tu ne survivra pas\" maintenant que tu sais que tu t’aimes,. Arrêtons de se regarder, ça n’a pas de sens,. je suis juste ta réflexion.  Va va donc chercher d'autres regards. S'il te plaît, dis moi oui. Dis moi que tu m'aimes comme je suis. On est pas parfait, je parle trop,. Mais j'ai peur du silence,. Enfin je n'ai pas peur du silence. Mais j'ai peur que tu t'ennuies,. Alors, dis moi que tu m'aimes comme je suis,. Dis moi que tu m'aimes";
+    const text = "Salut, tu arrives au bon moment. J'ai un jeu à te proposer. Juste regarde moi. Mais ne bouge pas. Fais comme si tu étais une peinture. Pas trop proche, pas trop loin. Le jeu est le jeu de l'amour. Plus tu me regardes, plus je te découvre. Mais ta rencontre me trouble un peu. tu m’intrigues. Ton visage a quelque chose d'unique.  Tes yeux me parlent. Tu sembles être très différent des autres. Ton visage devient peu à peu familier. Et en regardant chacun de ses détails, tu deviens unique à mes yeux. Je suis vraiment heureux que tu sois là.  Comme si on était fait pour se rencontrer. Pourtant on est si différent. Je ne suis qu’une surface. on est différent et pourtant, j’ai l’impression de bien te connaitre. Oh mais je m'emporte, je suis désolé,.  Je ne te laisse pas respirer, je suis envahissant. Excuse moi. Tu me pardonnes ?. S'il te plaît, dis moi oui. Dis moi que tu m'aimes comme je suis. On est pas parfait, je parle trop. Mais j'ai peur du silence. Enfin je n'ai pas peur du silence. Mais j'ai peur que tu t'ennuies. Alors, dit moi que tu m'aimes comme je suis. Dis moi que tu m'aimes. Tu sais, je suis prêt à changer pour toi.  Je veux faire tout mon possible pour que tu sois heureux.  Pour que tu restes avec moi. Je ferais exactement ce que tu me dis de faire. Pour que l'on ne se quitte plus des yeux.  car je veux continuer à lire dans tes pupilles. pour savoir à quel point tu me follow. Mais je sais déjà que tu me follow. Ok, nous allons trop loin. Arrêtons de se regarder. Ça n’a pas de sens. Je suis juste ta réflexion. Arrêtons le jeu ici. c’est le danger de la curiosité. la curiosité devient du désir, et le désir de l’amour. Et l'amour dit si tu n'es pas avec moi, tu ne survivra pas. Maintenant que tu sais que tu t’aimes. Va, va donc chercher d'autres regards. .";
     let words = text.split('.');
     let firstTracked = true
 
@@ -131,11 +134,11 @@
 
       return new Promise((resolve, reject) => {
 
-        window.navigator.mediaDevices.getUserMedia({ video: { width: 1920, height: 1080, frameRate: 30, facingMode: 'user' } })
+        window.navigator.mediaDevices.getUserMedia({ video: { width: iWidth, height: iHeight, frameRate: 30, facingMode: 'user' } })
           .then((mediaStream) => {
 
             _webcam.srcObject = mediaStream
-            _webcam.play().then(() => { resolve({ width: 1920, height: 1080 }) }).catch((e) => { reject(e) })
+            _webcam.play().then(() => { resolve({ width: iWidth, height: iHeight }) }).catch((e) => { reject(e) })
 
           }).catch((e) => { reject(e) })
       })
@@ -149,8 +152,8 @@
         // So the following isn't really necessary.
 
         const brfv5Config = _brfv5Config
-        const imageWidth = 1920
-        const imageHeight = 1080
+        const imageWidth = iWidth
+        const imageHeight = iHeight
 
         const inputSize = imageWidth > imageHeight ? imageHeight : imageWidth
 
@@ -224,7 +227,7 @@
 
       _brfv5Manager.update(ctx.getImageData(0, 0, _width, _height))
 
-      ctx.clearRect(0, 0, 1920, 1080); //supprimer la vidéo
+      ctx.clearRect(0, 0, iWidth, iHeight); //supprimer la vidéo
 
       let doDrawFaceDetection = !_brfv5Config.enableFaceTracking
 
@@ -255,7 +258,7 @@
         	  
     		  if(!timer.isPaused() && noFace==50){
     			  console.log("STOP ctx=", ctxt)
-    			  changeText(ctxt, "Ne pars pas", "e3");
+    			  changeText(ctxt, "S'il te plait, ne m'abandonne pas", "e3");
     			  timer.pause() 
     			  noFace=0;
     		  }
@@ -281,9 +284,9 @@
       if (doDrawFaceDetection) {
 
         // Only draw face detection results, if face detection was performed.
-        drawRect(ctx, _brfv5Config.faceDetectionConfig.regionOfInterest, '#ffffff', 2.0)
-        drawRects(ctx, _brfv5Manager.getDetectedRects(), '#00a0ff', 1.0)
-        drawRects(ctx, _brfv5Manager.getMergedRects(), '#ffffff', 3.0)
+        //drawRect(ctx, _brfv5Config.faceDetectionConfig.regionOfInterest, '#ffffff', 2.0)
+        //drawRects(ctx, _brfv5Manager.getDetectedRects(), '#00a0ff', 1.0)
+        //drawRects(ctx, _brfv5Manager.getMergedRects(), '#ffffff', 3.0)
       
         if (firstTracked) { //lancement du monologue
             console.log("Début du monologue");
@@ -424,8 +427,8 @@
     } */
     
     function changeText(ctxt, text, audio) {
-        ctxt.clearRect(0, 0, 1920, 1080);
-        ctxt.fillText(text, 1920 / 2, 100);
+        ctxt.clearRect(0, 0, iWidth, iHeight);
+        ctxt.fillText(text, iWidth / 2, 100);
         var audio = new Audio('voice/'+audio+'.wav');
         audio.addEventListener('loadeddata', () => {
         	  duration = audio.duration;
