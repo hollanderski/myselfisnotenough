@@ -57,7 +57,8 @@
 
 
     // Set the BRFv5 library name here, also set your own appId for reference.
-	  var timer;
+	var timer;
+    var audio;
     var noFace=0;
     var duration=3;
     const _libraryName = 'BRFv5_JS_tk260819_v5.0.0_trial'
@@ -250,9 +251,19 @@
     			 
     			
     			 if(timer.isPaused()){
-    				console.log("c reparti", timer.isPaused());
-    				timer.resume(); 
-    				noFace=0;
+    				 
+    				if(noFace<150)
+    				{
+    					console.log("c reparti", timer.isPaused());
+        				timer.resume(); 
+        				noFace=0;
+    				}
+    				else{
+    					window.clearTimeout(timer.getTimerId());
+    					firstTracked=true;
+    					index=0;
+    	    			noFace=0;
+    				}
     			 }
     		  } 
         	  
@@ -260,8 +271,12 @@
     			  console.log("STOP ctx=", ctxt)
     			  changeText(ctxt, "S'il te plait, ne m'abandonne pas", "e3");
     			  timer.pause() 
-    			  noFace=0;
+    			  //noFace=0;
     		  }
+    		  if(timer.isPaused() && noFace>140){
+    			ctxt.clearRect(0, 0, 1920, 1080);
+    		  }
+    		  
           }  
 		  
           console.log("etat", face.state)
@@ -298,7 +313,7 @@
            // setTimeout(synchronize, 3000); // ici mettre la durée de l'audio variable
             timer = new Timer(function() {
                 synchronize();
-            }, 1000);
+            }, 3000);
            
 
           }
@@ -309,7 +324,7 @@
             	changeText(ctxt, words[index], (index+1).toString());
         	
         	
-        	if(index<words.length){
+        	if(index<words.length-1){
         	
 //setTimeout(synchronize, 3000);
 	//	window.clearTimeout(timer.getTimerId());
@@ -429,7 +444,7 @@
     function changeText(ctxt, text, audio) {
         ctxt.clearRect(0, 0, iWidth, iHeight);
         ctxt.fillText(text, iWidth / 2, 100);
-        var audio = new Audio('voice/'+audio+'.wav');
+        audio = new Audio('voice/'+audio+'.wav');
         audio.addEventListener('loadeddata', () => {
         	  duration = audio.duration;
         })
