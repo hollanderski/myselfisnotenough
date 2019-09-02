@@ -55,7 +55,7 @@
   <script type="module">
 
 	// Important pour dessiner les traits et isoler bouche, yeux, etc.
-	import { faceExtendedTriangles74l } from './js/utils/utils__face_triangles.js'
+	import { faceExtendedTrianglesWithMouthWhole74l } from './js/utils/utils__face_triangles.js'
 
     // Set the BRFv5 library name here, also set your own appId for reference.
 	var timer;
@@ -290,7 +290,7 @@
 			//drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
             
 			// Traits : 
-            drawTriangles(ctx, face.vertices, faceExtendedTriangles74l, false, 1.0, 0x00a0ff, 0.4);
+            drawTriangles(ctx, face.vertices, faceExtendedTrianglesWithMouthWhole74l, false, 1.0, 0x00a0ff, 0.4);
             
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
 
