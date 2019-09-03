@@ -55,7 +55,7 @@
   <script type="module">
 
 	// Important pour dessiner les traits et isoler bouche, yeux, etc.
-	import { faceExtendedTrianglesWithMouthWhole74l } from './js/utils/utils__face_triangles.js'
+	import { faceTrianglesWithMouthWhole68l } from './js/utils/utils__face_triangles.js'
 
     // Set the BRFv5 library name here, also set your own appId for reference.
 	var timer;
@@ -253,14 +253,17 @@
     			
     			 if(timer.isPaused()){
     				 
-    				if(noFace<150)
+    				if(noFace<40)
     				{
     					console.log("c reparti", timer.isPaused());
         				timer.resume(); 
         				noFace=0;
     				}
     				else{ // Retour au début après 150 reset
+						 console.log("STOP ctx=", audio);
     					window.clearTimeout(timer.getTimerId());
+						window.clearTimeout(timer);
+						timer=null;
     					firstTracked=true;
     					index=0;
     	    			noFace=0;
@@ -268,13 +271,13 @@
     			 }
     		  } 
         	  
-    		  if(!timer.isPaused() && noFace==50){
-    			  console.log("STOP ctx=", ctxt)
+    		  if(timer!=null && !timer.isPaused() && noFace==20){
+    			 
     			  changeText(ctxt, "S'il te plait, ne m'abandonne pas", "e3");
     			  timer.pause() 
     			  //noFace=0;
     		  }
-    		  if(timer.isPaused() && noFace>140){ // on rend vide le canvad (facultatif)
+    		  if(timer!=null && timer.isPaused() && noFace>40){ // on rend vide le canvad (facultatif)
     			ctxt.clearRect(0, 0, 1920, 1080);
     		  }
     		  
@@ -290,7 +293,7 @@
 			//drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
             
 			// Traits : 
-            drawTriangles(ctx, face.vertices, faceExtendedTrianglesWithMouthWhole74l, false, 1.0, 0x00a0ff, 0.4);
+            drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
             
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
 
@@ -315,21 +318,23 @@
         	var index=0; 
           	  // Si rien tracké pendant 5s : changer texte "ne me quitte pas"
           	  // Si après ça toujours rien : changer texte retour début + firstTracked=true
-          	changeText(ctxt, words[index], (index+1).toString()); 
+          	//changeText(ctxt, words[index], (index+1).toString()); 
             firstTracked = false;
            // setTimeout(synchronize, 3000); // ici mettre la durée de l'audio variable
-            timer = new Timer(function() {
+          /*  timer = new Timer(function() {
                 synchronize();
-            }, 3000);
+            }, 1000); */
+
+		synchronize();
            
 
           }
         
         function synchronize(){
 			console.log("synchronize", index);
-        		index++;
+        		
             	changeText(ctxt, words[index], (index+1).toString());
-        	
+        		index++;
         	
         	if(index<words.length-1){
         	
@@ -340,12 +345,14 @@
         			console.log("suite")
                     synchronize();
         			console.log("duration=", duration);
-                }, duration*1000+1000);  //
+                }, duration*1000);  //
         
         		
         	}
         	else{ // Recommence depuis le début du texte
         		window.clearTimeout(timer.getTimerId());
+				window.clearTimeout(timer);
+				timer=null;
 				firstTracked=true;
 				index=0;
     			noFace=0;
@@ -501,13 +508,14 @@
     } */
     
     function changeText(ctxt, text, audio) {
-        ctxt.clearRect(0, 0, iWidth, iHeight);
-        ctxt.fillText(text, iWidth / 2, 100);
+        
         audio = new Audio('voice/'+audio+'.wav');
         audio.addEventListener('loadeddata', () => {
         	  duration = audio.duration;
         })
         audio.play();
+		ctxt.clearRect(0, 0, iWidth, iHeight);
+        ctxt.fillText(text, iWidth / 2, 100);
       }
     
     function Timer(callback, delay) {
