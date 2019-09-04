@@ -59,6 +59,7 @@
 
     // Set the BRFv5 library name here, also set your own appId for reference.
 	var timer;
+	var index;
     var audio;
     var noFace=0;
     var duration=3;
@@ -81,7 +82,7 @@
 
     const textcanvas = document.getElementById('text')
     const ctxt = textcanvas.getContext("2d")
-    ctxt.font = "100px MyFont"
+    ctxt.font = "60px MyFont"
     ctxt.fillStyle = "white"
     ctxt.textAlign = "center"
     const text = "Salut, tu arrives au bon moment. J'ai un jeu à te proposer. Juste regarde moi. Mais ne bouge pas. Fais comme si tu étais une peinture. Pas trop proche, pas trop loin. Le jeu est le jeu de l'amour. Plus tu me regardes, plus je te découvre. Mais ta rencontre me trouble un peu. tu m’intrigues. Ton visage a quelque chose d'unique.  Tes yeux me parlent. Tu sembles être très différent des autres. Ton visage devient peu à peu familier. Et en regardant chacun de ses détails, tu deviens unique à mes yeux. Je suis vraiment heureux que tu sois là.  Comme si on était fait pour se rencontrer. Pourtant on est si différent. Je ne suis qu’une surface. on est différent et pourtant, j’ai l’impression de bien te connaitre. Oh mais je m'emporte, je suis désolé,.  Je ne te laisse pas respirer, je suis envahissant. Excuse moi. Tu me pardonnes ?. S'il te plaît, dis moi oui. Dis moi que tu m'aimes comme je suis. On est pas parfait, je parle trop. Mais j'ai peur du silence. Enfin je n'ai pas peur du silence. Mais j'ai peur que tu t'ennuies. Alors, dis moi que tu m'aimes comme je suis. Dis moi que tu m'aimes. Tu sais, je suis prêt à changer pour toi.  Je veux faire tout mon possible pour que tu sois heureux.  Pour que tu restes avec moi. Je ferai exactement ce que tu me dis de faire. Pour que l'on ne se quitte plus des yeux.  car je veux continuer à lire dans tes pupilles. pour savoir à quel point tu me follow. Mais je sais déjà que tu me follow. Ok, nous allons trop loin. Arrêtons de se regarder. Ça n’a pas de sens. Je suis juste ta réflexion. Arrêtons le jeu ici. c’est le danger de la curiosité. la curiosité devient du désir, et le désir de l’amour. Et l'amour dit si tu n'es pas avec moi, tu ne survivra pas. Maintenant que tu sais que tu t’aimes. Va, va donc chercher d'autres regards. .";
@@ -253,15 +254,14 @@
     			
     			 if(timer.isPaused()){
     				 
-    				if(noFace<40)
+    				if(noFace<80)
     				{
 						audio.pause();
-    					console.log("c reparti", timer.isPaused());
         				timer.resume(); 
         				noFace=0;
     				}
     				else{ // Retour au début après 150 reset
-						 console.log("STOP ctx=", audio);
+						
     					window.clearTimeout(timer.getTimerId());
 						window.clearTimeout(timer);
 						timer=null;
@@ -279,7 +279,7 @@
     			  timer.pause() 
 				 
     		  }
-    		  if(timer!=null && timer.isPaused() && noFace>40){ // on rend vide le canvad (facultatif)
+    		  if(timer!=null && timer.isPaused() && noFace>80){ // on rend vide le canvad (facultatif)
     			ctxt.clearRect(0, 0, 1920, 1080);
     		  }
     		  
@@ -292,8 +292,13 @@
             //drawRect(ctx, _brfv5Config.faceTrackingConfig.regionOfInterest, '#00a0ff', 2.0)
             
 			// Points :
-			drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
-            
+			
+			if(index>=8 && index<14){
+				drawCircles(ctx, face.landmarks.slice(36,47), '#ffffff', 0.5 * sizeFactor);
+			}	
+			else if(index>8) drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
+			// à partir de 14 tout le visage, sinon juste yeux i.e 36-47 
+			
 			// Traits : 
             //drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
             
@@ -318,7 +323,7 @@
 	
         if (firstTracked) { //lancement du monologue
             console.log("Début du monologue");
-        	var index=0; 
+        	 index=0; 
           	  // Si rien tracké pendant 5s : changer texte "ne me quitte pas"
           	  // Si après ça toujours rien : changer texte retour début + firstTracked=true
           	//changeText(ctxt, words[index], (index+1).toString()); 
@@ -350,7 +355,7 @@
         			console.log("suite")
                     synchronize();
         			console.log("duration=", duration);
-                }, duration*1000);  //
+                }, duration*1000+400);  //
         
         		
         	}
