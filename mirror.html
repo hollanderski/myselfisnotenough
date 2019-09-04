@@ -231,7 +231,7 @@
 
       ctx.clearRect(0, 0, iWidth, iHeight); //supprimer la vidéo
 
-      let doDrawFaceDetection = !_brfv5Config.enableFaceTracking
+      let doDrawFaceDetection = true; //!_brfv5Config.enableFaceTracking
 
       if (_brfv5Config.enableFaceTracking) {
 
@@ -255,6 +255,7 @@
     				 
     				if(noFace<40)
     				{
+						audio.pause();
     					console.log("c reparti", timer.isPaused());
         				timer.resume(); 
         				noFace=0;
@@ -273,9 +274,10 @@
         	  
     		  if(timer!=null && !timer.isPaused() && noFace==20){
     			 
-    			  changeText(ctxt, "S'il te plait, ne m'abandonne pas", "e3");
+				  audio.pause();
+    			  changeText(ctxt, "S'il te plait, ne m'abandonne pas", "e"+(getRandomInt(2)+1));
     			  timer.pause() 
-    			  //noFace=0;
+				 
     		  }
     		  if(timer!=null && timer.isPaused() && noFace>40){ // on rend vide le canvad (facultatif)
     			ctxt.clearRect(0, 0, 1920, 1080);
@@ -290,10 +292,10 @@
             //drawRect(ctx, _brfv5Config.faceTrackingConfig.regionOfInterest, '#00a0ff', 2.0)
             
 			// Points :
-			//drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
+			drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
             
 			// Traits : 
-            drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
+            //drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
             
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
 
@@ -313,19 +315,22 @@
         //drawRects(ctx, _brfv5Manager.getDetectedRects(), '#00a0ff', 1.0)
         //drawRects(ctx, _brfv5Manager.getMergedRects(), '#ffffff', 3.0)
       
+	
         if (firstTracked) { //lancement du monologue
             console.log("Début du monologue");
         	var index=0; 
           	  // Si rien tracké pendant 5s : changer texte "ne me quitte pas"
           	  // Si après ça toujours rien : changer texte retour début + firstTracked=true
           	//changeText(ctxt, words[index], (index+1).toString()); 
-            firstTracked = false;
+            
            // setTimeout(synchronize, 3000); // ici mettre la durée de l'audio variable
           /*  timer = new Timer(function() {
                 synchronize();
             }, 1000); */
 
 		synchronize();
+
+		firstTracked = false;
            
 
           }
@@ -499,21 +504,19 @@
         (((color) & 0xff).toString(10)) + ', ' + alpha + ')'
     }
 
-    // Pour changer le texte du textcanvas
-   /* function changeText(ctxt, text) {
-      ctxt.clearRect(0, 0, 1920, 1080);
-      ctxt.fillText(text[1], 1920 / 2, 100);
-      //var audio = new Audio('test.wav');
-      //audio.play();
-    } */
+  
+	function getRandomInt(max) {
+  		return Math.floor(Math.random() * Math.floor(max));
+	}
     
-    function changeText(ctxt, text, audio) {
+    function changeText(ctxt, text, mp3) {
         
-        audio = new Audio('voice/'+audio+'.wav');
+        audio = new Audio('voice/'+mp3+'.wav');
         audio.addEventListener('loadeddata', () => {
         	  duration = audio.duration;
         })
         audio.play();
+		
 		ctxt.clearRect(0, 0, iWidth, iHeight);
         ctxt.fillText(text, iWidth / 2, 100);
       }
