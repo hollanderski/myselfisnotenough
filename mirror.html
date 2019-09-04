@@ -293,10 +293,21 @@
             
 			// Points :
 			
-			if(index>=8 && index<14){
-				drawCircles(ctx, face.landmarks.slice(36,47), '#ffffff', 0.5 * sizeFactor);
+			if(index>=12 && index<20){
+				drawCircles(ctx, face.landmarks.slice(36,48), '#ffffff', 0.5 * sizeFactor);
 			}	
-			else if(index>8) drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
+			else {
+				if(index>=20) drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
+			}
+
+			if(index>=15 && index<17)
+				drawCircles(ctx, new Array(face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)]), '#ffffff', 0.5 * sizeFactor)
+			if(index>=17 && index<19)
+				drawCircles(ctx, new Array(face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)]), '#ffffff', 0.5 * sizeFactor)
+			if(index>=19 && index<20)
+				drawCircles(ctx, new Array(face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)],face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)], face.landmarks[getRandomInt(68)]), '#ffffff', 0.5 * sizeFactor)
+			
+			
 			// à partir de 14 tout le visage, sinon juste yeux i.e 36-47 
 			
 			// Traits : 
