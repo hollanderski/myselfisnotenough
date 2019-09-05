@@ -303,7 +303,10 @@
 				drawCircles(ctx, face.landmarks.slice(36,48), '#ffffff', 0.5 * sizeFactor);
 			}	
 			else {
-				if(index>=20) drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
+				if(index>=20 && index<=40) 
+					drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
+           
+//drawCircles(ctx, face.landmarks, '#ffffff', 0.5 * sizeFactor)
 				
 			}
 
@@ -318,9 +321,9 @@
 			// à partir de 14 tout le visage, sinon juste yeux i.e 36-47 
 			
 			// Traits : 
-          //  drawTriangles(points, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
+          //  drawTriangles(ctx, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
            
-			if(index>40 && index<words.length)
+			if(index>40 && index<words.length-1)
 			 drawCircles(points, face.landmarks, '#ffffff', 0.5 * sizeFactor)
 				
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
