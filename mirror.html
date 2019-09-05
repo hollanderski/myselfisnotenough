@@ -320,7 +320,7 @@
 			// Traits : 
           //  drawTriangles(points, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
            
-			if(index>40)
+			if(index>40 && index<words.length)
 			 drawCircles(points, face.landmarks, '#ffffff', 0.5 * sizeFactor)
 				
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
@@ -384,10 +384,13 @@
         		window.clearTimeout(timer.getTimerId());
 				window.clearTimeout(timer);
 				timer=null;
-				firstTracked=true;
 				points.clearRect(0, 0, 1920, 1080);
+				
+				setTimeout(function(){
+				points.clearRect(0, 0, 1920, 1080);
+				firstTracked=true;
 				index=0;
-    			noFace=0;
+    			noFace=0;},3000)
         	}
         }
       }
