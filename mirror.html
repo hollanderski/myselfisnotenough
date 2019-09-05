@@ -271,7 +271,7 @@
 						window.clearTimeout(timer);
 						timer=null;
     					firstTracked=true;
-						points.clear();
+						points.clearRect(0, 0, 1920, 1080);
     					index=0;
     	    			noFace=0;
     				}
@@ -320,7 +320,7 @@
 			// Traits : 
           //  drawTriangles(points, face.vertices, faceTrianglesWithMouthWhole68l, false, 1.0, 0x00a0ff, 0.4);
            
-			if(index>30)
+			if(index>40)
 			 drawCircles(points, face.landmarks, '#ffffff', 0.5 * sizeFactor)
 				
             //drawRect(ctx, face.bounds, '#ffffff', 1.0)
@@ -385,7 +385,7 @@
 				window.clearTimeout(timer);
 				timer=null;
 				firstTracked=true;
-				points.clear();
+				points.clearRect(0, 0, 1920, 1080);
 				index=0;
     			noFace=0;
         	}
@@ -429,7 +429,7 @@
       ctx.strokeStyle = null
       ctx.fillStyle =  getColor(color, 1.0)
 
-      let _radius = radius || 2.0
+      let _radius = radius || 2.3 // 2.0
 
       for (let i = 0; i < array.length; ++i) {
 
