@@ -9,4 +9,5 @@ Little by little, the viewer is pulled into an ambiguous monologue with the mach
 Using the process of interpellation and apparatus, the installation is designed to lure the viewer into social interactions with the device, enticing them to study their own self-image and identity.
 
 website : https://wwwetu.utc.fr/~nlizemas/mirror.html
+
 video of the exhibition : https://www.youtube.com/watch?v=65NT0Lr6OVs
