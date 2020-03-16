@@ -10,4 +10,4 @@ Using the process of interpellation and apparatus, the installation is designed 
 
 website : https://wwwetu.utc.fr/~nlizemas/mirror.html
 
-video of the exhibition : https://www.youtube.com/watch?v=65NT0Lr6OVs
+exhibition : https://www.youtube.com/watch?v=65NT0Lr6OVs
